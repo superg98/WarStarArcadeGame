@@ -2,7 +2,8 @@ Hello!
 
 This project is being made as a fun side-project to Anna Brogowski's studies.
 None of this work intends to infringe on any copyright claims, it is purely for fun and education of using Python and
-GitHub pushing/fetching commands.
+GitHub pushing/fetching commands. However, this is heavily based off the 1983 Star Wars arcade game. An example of the
+gameplay can be seen here, on Galactic Voyage's YouTube channel: https://www.youtube.com/watch?v=PzGWEYCRA0w
 
 If you intend to run the game to test it (once it's finished), you'll download the files for this project and run
 the .exe file it comes with. From there, you should be able to play through a few levels of the game.
