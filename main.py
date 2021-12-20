@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+import numpy
 
 # Initialize
 pygame.init()
@@ -21,7 +22,7 @@ shipImgY = -15
 
 # Enemy Ship image
 enemyImg = pygame.image.load('warstarenemy.png')
-enemyImg = pygame.transform.scale(enemyImg, (45, 10))  # Scale it to smaller size
+enemyImg = pygame.transform.scale(enemyImg, (10, 10))  # Scale it to smaller size
 # X and Y positions for movement later
 enemyImgX = random.randint(0, 1400)
 enemyImgY = random.randint(0, 1000)
@@ -35,7 +36,29 @@ def ship(x, y):
     screen.blit(shipImg, (x, y))
 
 
-def enemy(passImg, x, y):
+def enemy(passImg, scale, x, y):
+    # Enemy movement
+    if not enemy_shot_status:
+        if 1000 >= y >= 0 and 1400 >= x >= 0:
+            rand_num = random.randint(1, 4)
+            if rand_num == 1:
+                y += 3
+                x *= 3
+                scale *= numpy.log(scale ** 2)
+            elif rand_num == 2:
+                y -= 3
+                x *= 3
+                scale *= numpy.log(scale ** 2)
+            elif rand_num == 3:
+                y += 3
+                x /= 3
+                scale *= numpy.log(scale ** 2)
+            elif rand_num == 4:
+                y -= 3
+                x /= 3
+                scale *= numpy.log(scale ** 2)
+
+    passImg = pygame.transform.scale(passImg, (scale, scale))
     screen.blit(passImg, (x, y))
 
 
@@ -53,21 +76,8 @@ while running:
         if event.type == pygame.MOUSEMOTION:
             shipImgPos = pygame.mouse.get_pos()
 
-        # Enemy movement
-        if not enemy_shot_status and 1000 >= enemyImgY >= 0 and 1400 >= enemyImgX >= 0:
-            enemyImgY += random.randint(-5, 5)
-            enemyImgX += random.randint(-5, 5)
-        elif not enemy_shot_status and not 1000 >= enemyImgY >= 0 or not 1400 >= enemyImgX >= 0:
-            enemyImgY += random.randint(5, -5)
-            enemyImgX += random.randint(5, -5)
-        elif enemy_shot_status:
-            enemy.kill()
-
-        if not enemy_shot_status:
-            enemyImg = pygame.transform.scale(enemyImg, (55, 20))  # Update scale
-
     # Game refreshing
-    enemy(enemyImg, enemyImgX, enemyImgY)
+    enemy(enemyImg, enemyScale, enemyImgX, enemyImgY)
     ship(shipImgPos[0] / 62 - 20, shipImgPos[1] / 62 - 20)
 
     pygame.display.update()
